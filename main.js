@@ -5,7 +5,11 @@ canvas.height= 450;
 // get the drawing context from the canvas and keep it 2d
 const context = canvas.getContext("2d")
 // note that the values are in pixels
-const spaceship = new Spaceship(100, 100, 30, 50)
+const length = 30;
+const height = 50;
+const startx = 100
+const starty = window.outerHeight
+const spaceship = new Spaceship(100, 100, length, height)
 spaceship.draw(context);
 
 animate();

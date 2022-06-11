@@ -1,9 +1,9 @@
 class Controls {
     constructor () {
-        this.north=false;
-        this.south=false;
-        this.east=false;
-        this.west=false;
+        this.up=false;
+        this.down=false;
+        this.right=false;
+        this.left=false;
 
         this.#addKeyboardListeners();
     }
@@ -18,16 +18,16 @@ class Controls {
         document.onkeydown = (event) => {
             switch(event.key) {
                 case "ArrowLeft":
-                    this.west = true;
+                    this.left = true;
                     break; 
                 case "ArrowRight":
-                    this.east = true;
+                    this.right = true;
                     break;
                 case "ArrowUp":
-                    this.north = true;
+                    this.up = true;
                     break;
                 case "ArrowDown":
-                    this.south = true;
+                    this.down = true;
                     break;
             }
             // console.table(this);
@@ -37,16 +37,16 @@ class Controls {
         document.onkeyup = (event) => {
             switch(event.key) {
                 case "ArrowLeft":
-                    this.west = false;
+                    this.left = false;
                     break; 
                 case "ArrowRight":
-                    this.east = false;
+                    this.right = false;
                     break;
                 case "ArrowUp":
-                    this.north = false;
+                    this.up = false;
                     break;
                 case "ArrowDown":
-                    this.south = false;
+                    this.down = false;
                     break;
             }
             // console.table(this);
