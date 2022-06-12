@@ -27,8 +27,13 @@ function animate () {
     // the canvas needs to be refreshed on each animation
     canvas.width=window.outerWidth; // reupdating the canvase prevents the trail left behind
     
+    // create illusion that camera (the view) is following the spaceship
+    context.save();
+    context.translate(-spaceship.x+canvas.width*.25, 0);
+
     map.draw(context);
     spaceship.draw(context);
+    context.restore();
     // this calls the animate() method over and over
     requestAnimationFrame(animate);
 }
