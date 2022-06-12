@@ -1,7 +1,7 @@
 class Sensor {
     constructor(spaceship) {
         this.spaceship = spaceship;
-        this.rayCount = 25;
+        this.rayCount = 4;
         this.rayLength = 100; // 100 unit pixels
         this.raySpread = Math.PI/2;
 
@@ -80,8 +80,7 @@ class Sensor {
             ctx.beginPath();
             ctx.lineWidth = 2;
             ctx.strokeStyle="blue";
-            console.log(this.rays)
-            console.log(this.rays[i][1])
+
             ctx.moveTo(
                 this.rays[i][0].x,
                 this.rays[i][0].y
@@ -97,8 +96,7 @@ class Sensor {
             ctx.beginPath();
             ctx.lineWidth = 2;
             ctx.strokeStyle="yellow";
-            console.log(this.rays)
-            console.log(this.rays[i][1])
+
             ctx.moveTo(
                 this.rays[i][1].x,
                 this.rays[i][1].y

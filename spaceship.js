@@ -23,8 +23,21 @@ class Spaceship {
     //based on the controls
     update = (mapBorders) => {
        this.#move(); 
+       this.polygon = this.#createPolygon()
        this.sensor.update(mapBorders);
     }
+
+    #createPolygon() {
+        const points = [];
+        const rad = Math.hypot(this.height/2, this.length/2)/2;
+        const alpha = Math.atan2(this.height/2, this.length/2);
+        points.push({
+            x: this.x+Math.sin(this.angle+alpha)*rad,
+            y: this.y+Math.cos(this.angle+alpha)*rad
+        })
+         
+        return points
+    }    
 
     #move = () => {
         if (this.controls.left) {
@@ -95,8 +108,15 @@ class Spaceship {
             // this.width, 
             // this.height
         );
+        context.arc(this.height/2, this.length/2, 5, 0, 2*Math.PI)
+        context.moveTo(this.polygon[0].x, this.polygon[0].y)
+        context.arc(this.polygon[0].x, this.polygon[0].y, 10, 0, 2*Math.PI)
+        context.fill()
         
-        context.fill();
+        // console.log(this.polygon)            
+        // context.arc(this.polygon[0].x, this.polygon[0].y, 15, 0, 2*Math.PI)
+        
+        // context.fill();
         context.restore(); // prevent infinite translation??
         // context.moveTo(this.x, this.y); // move pen to x,y and set as start
         // context.lineTo(100, 75) // draw line to this x,y point
