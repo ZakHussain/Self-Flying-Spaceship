@@ -10,11 +10,11 @@ const map = new Map(canvas.height/2, canvas.height*0.9, 10);
 // note that the values are in pixels
 const length = 30;
 const height = 50;
-const startx = 100
-const starty = map.getMapLane(4)
+const startx = 100;
+const starty = map.getMapLane(4);
 
-const spaceship = new Spaceship(100, starty , length, height)
-spaceship.draw(context);
+const spaceship = new Spaceship(100, starty , length, height);
+// spaceship.draw(context);
 
 animate();
 
@@ -22,7 +22,7 @@ animate();
 // I have to keep this as a normal function and not an arrow. Save
 // arrow functions of use within classes
 function animate () {
-    spaceship.update();
+    spaceship.update(map.borders);
 
     // the canvas needs to be refreshed on each animation
     canvas.width=window.outerWidth; // reupdating the canvase prevents the trail left behind

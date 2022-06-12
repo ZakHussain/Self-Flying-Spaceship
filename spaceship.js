@@ -14,13 +14,16 @@ class Spaceship {
 
         this.angle=0;
 
+        // pass the ship to the sensor
+        this.sensor = new Sensor(this);
         this.controls = new Controls();
     }
 
     // with the controls made, now we have to update the Spaceship
     //based on the controls
-    update = () => {
+    update = (mapBorders) => {
        this.#move(); 
+       this.sensor.update(mapBorders);
     }
 
     #move = () => {
@@ -99,6 +102,9 @@ class Spaceship {
         // context.lineTo(100, 75) // draw line to this x,y point
         // context.lineTo(100, 25) // draw a line to this x,y point
         // context.fill()
+
+        // spaceship is responsable for drawing its own sensors
+        this.sensor.draw(context);
         
     }
 }
