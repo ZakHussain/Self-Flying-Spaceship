@@ -1,5 +1,5 @@
 class Map {
-    constructor(y, height, laneCount=5){
+    constructor(y, height, laneCount=4){
         this.y = y;
         this.height = height;
         this.laneCount = laneCount;

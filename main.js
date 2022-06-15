@@ -5,15 +5,15 @@ canvas.height= 450;
 // get the drawing context from the canvas and keep it 2d
 const context = canvas.getContext("2d")
 
-const map = new Map(canvas.height/2, canvas.height*0.9, 10);
+const map = new Map(canvas.height/2, canvas.height*0.9);
 
 // note that the values are in pixels
 const length = 30;
 const height = 50;
-const startx = 100;
-const starty = map.getMapLane(4);
+const startx = 50;
+// const starty = map.getMapLane(0);
 
-const spaceship = new Spaceship(100, starty , length, height);
+const spaceship = new Spaceship(startx, map.getMapLane(1), length, height);
 // spaceship.draw(context);
 
 animate();

@@ -2,8 +2,9 @@ class Spaceship {
     constructor(x, y, length, height) {
         this.x = x;
         this.y = y;
-        this.length = length;
-        this.height = height;
+        console.log("starting:" + " " + this.x + " " + this.y)
+        this.length = length; // objects y
+        this.height = height; // objects x (its horribly contradictory I used bad var names)
         
         this.speed = 0;
         this.acceleration = .2;
@@ -27,17 +28,30 @@ class Spaceship {
        this.sensor.update(mapBorders);
     }
 
-    #createPolygon() {
-        const points = [];
-        const rad = Math.hypot(this.height/2, this.length/2)/2;
-        const alpha = Math.atan2(this.height/2, this.length/2);
+    // TODO: FIX THE points properly to align my polygon with 
+    // the correct orientation as the sensor points
+    #createPolygon(){
+        const points=[];
+        const rad=Math.hypot(this.height,this.length)/2;
+        const alpha=Math.atan2(this.height,this.length);
         points.push({
-            x: this.x+Math.sin(this.angle+alpha)*rad,
-            y: this.y+Math.cos(this.angle+alpha)*rad
-        })
-         
-        return points
-    }    
+            x:this.x+Math.sin(this.angle+alpha)*rad,
+            y:this.y-Math.cos(this.angle+alpha)*rad
+        });
+        // points.push({
+        //     x:this.x+Math.sin(Math.PI+this.angle+alpha)*rad,
+        //     y:this.y+Math.cos(Math.PI+this.angle+alpha)*rad
+        // });
+        // points.push({
+        //     x:this.x+Math.sin(Math.PI+this.angle-alpha)*rad,
+        //     y:this.y+Math.cos(Math.PI+this.angle-alpha)*rad
+        // });
+        // points.push({
+        //     x:this.x+Math.sin(Math.PI+this.angle+alpha)*rad,
+        //     y:this.y+Math.cos(Math.PI+this.angle+alpha)*rad
+        // });
+        return points;
+    }   
 
     #move = () => {
         if (this.controls.left) {
@@ -90,33 +104,54 @@ class Spaceship {
     }
     draw(context) {
         
-        context.save();
-        context.translate(this.x, this.y);
-        context.rotate(this.angle);
+        context.save(); // save the previous state of the context (this is somehow ensuring the sensor raycasts  remain with the same (x,y) coordinates as the rectangle i'm drawing)
+        // context.translate(this.x, this.y); // moves the canvas by some x and y (this creates a shift)
+        // context.rotate(this.angle);
 
 
         context.beginPath();
         // note that the (0,0) point is in the top left of the canvas
-        context.rect(
-            // set the start position
-            -this.height/2,
-            -this.length/2,
-            this.height,
-            this.length
-            // -this.length/2, 
-            // -this.height/2,
-            // this.width, 
-            // this.height
-        );
-        context.arc(this.height/2, this.length/2, 5, 0, 2*Math.PI)
-        context.moveTo(this.polygon[0].x, this.polygon[0].y)
-        context.arc(this.polygon[0].x, this.polygon[0].y, 10, 0, 2*Math.PI)
-        context.fill()
-        
-        // console.log(this.polygon)            
-        // context.arc(this.polygon[0].x, this.polygon[0].y, 15, 0, 2*Math.PI)
-        
+        // ====================================
+        // context.rect(
+        //     // set the start position
+        //     this.x,
+        //     this.y,
+        //     this.height,
+        //     this.length
+        // );
+
+        // context.moveTo(this.x, this.y)
+        // context.arc(this.x, this.y, 5, 0, 2*Math.PI)
+        // // context.moveTo(this.polygon[0].x, this.polygon[0].y)
+        // context.arc(this.polygon[0].x, this.polygon[0].y, 6, 0, 2*Math.PI)
+        // console.log(this.polygon[0].x + " " + this.polygon[0].y)
+        // // context.arc(this.polygon[1].x, this.polygon[1].y, 6, 0, 2*Math.PI)
+        // // context.arc(this.polygon[2].x, this.polygon[2].y, 10, 0, 2*Math.PI)
+        // // context.arc(this.polygon[3].x, this.polygon[3].y, 10, 0, 2*Math.PI)
+        // context.moveTo(75, 159.375) 
+        // context.arc(75, 159, 5, 0, 2*Math.PI)
+        context.stroke()
+        //==================================
+        // context.beginPath();
+
+        // context.arc(this.x, this.y, 15, 0, 2*Math.PI)
+        // context.moveTo(this.polygon[0].x,this.polygon[0].y);
+        // for(let i=1;i<this.polygon.length;i++){
+        //     // context.lineTo(this.polygon[i].x,this.polygon[i].y);
+        //     context.arc(this.polygon[i].x, this.polygon[i].y, 5, 0, 2*Math.PI)
+        // }
+
+        // context.arc(this.x, this.y, 15, 0, 2*Math.PI)
+        // console.log(this.x + " " + this.y)
         // context.fill();
+        // context.fill();
+  
+        // console.log(this.polygon)   
+        context.moveTo(this.x, this.y)   
+        context.arc(this.x, this.y, 15, 0, 2*Math.PI)   
+        context.arc(this.polygon[0].x, this.polygon[0].y, 15, 0, 2*Math.PI)
+        
+        context.stroke();
         context.restore(); // prevent infinite translation??
         // context.moveTo(this.x, this.y); // move pen to x,y and set as start
         // context.lineTo(100, 75) // draw line to this x,y point
