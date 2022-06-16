@@ -103,39 +103,10 @@ class Sensor {
                 this.rays[i][1].y
             )
             ctx.lineTo(
-                // this.rays[i][1].x,
-                // this.rays[i][1].y
                 // only show the ray that has an intersection
                 end.x, end.y
             )
-            
-            // ctx.stroke();      
-            // ctx.arc(this.spaceship.x, this.spaceship.y, 5, 0, 2*Math.PI)
             ctx.stroke();
-            // console.log("spaceship: " + this.spaceship.x + "  " + this.spaceship.y)
-            // context.arc(this.polygon[0].x, this.polygon[0].y, 15, 0, 2*Math.PI)
-            // console.log("sensor info" + end.x + "  " + end.y)
         }
-        // console.log(this.spaceship.x, this.spaceship.y
-        // console.log(this.spaceship.x, this.spaceship.y)
-        ctx.moveTo(this.spaceship.x, this.spaceship.y)
-        ctx.arc(this.spaceship.x, this.spaceship.y, 5, 0, 2*Math.PI)
-
-
-        // hard numbers. if these match with the spaceship context, 
-        // we are in business
-        ctx.moveTo(25, 159.375) 
-        ctx.arc(25, 159, 5, 0, 2*Math.PI)
-        
-        ctx.moveTo(75, 159.375) 
-        ctx.arc(75, 159, 5, 0, 2*Math.PI)
-        
-        ctx.moveTo(25, 189.375) 
-        ctx.arc(25, 189, 5, 0, 2*Math.PI)
-        
-        ctx.moveTo(75, 189.375) 
-        ctx.arc(75, 189, 5, 0, 2*Math.PI)
-
-        ctx.stroke()
     }
 }

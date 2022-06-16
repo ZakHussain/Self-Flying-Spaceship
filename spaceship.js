@@ -11,10 +11,11 @@ class Spaceship {
 
         // stop the Spaceship from going to fast and implement friction
         this.maxSpeed = 5
-        this.friction=0.05;
+        this.friction = 0.05;
 
-        this.angle=0;
+        this.angle = 0;
 
+        this.isDamaged = false;
         // pass the ship to the sensor
         this.sensor = new Sensor(this);
         this.controls = new Controls();
@@ -23,9 +24,23 @@ class Spaceship {
     // with the controls made, now we have to update the Spaceship
     //based on the controls
     update = (mapBorders) => {
-       this.#move(); 
-       this.polygon = this.#createPolygon()
-       this.sensor.update(mapBorders);
+        if (!this.isDamaged) {
+            this.#move(); 
+            this.polygon = this.#createPolygon()
+            this.isDamaged = this.#assessDamage(mapBorders)
+        }
+        this.sensor.update(mapBorders);
+    }
+
+    #assessDamage(mapBorders) {
+        for (let i = 0; i < mapBorders.length; i++) {
+            if (polysIntersect(this.polygon, mapBorders[i])){
+                console.log("true")
+                return true
+            }
+        }
+        // console.log("false")
+        return false;
     }
 
     // TODO: FIX THE points properly to align my polygon with 
@@ -34,28 +49,28 @@ class Spaceship {
         const points=[];
         const rad=Math.hypot(this.height,this.length)/2;
         const alpha=Math.atan2(this.height,this.length);
-        // sin(45), -cos(45)
+        // sin(45), -cos(45) (top right)
         points.push({
             x:this.x+Math.sin(this.angle+alpha)*rad,
             y:this.y-Math.cos(this.angle+alpha)*rad
         });
 
-        // sin(45), cos(45)
+        // sin(45), cos(45) (bottom left)
         points.push({
-            x:this.x + Math.sin(this.angle+alpha) * rad, 
-            y:this.y+ Math.cos(this.angle+alpha)*rad
+            x:this.x + Math.sin(-this.angle-alpha) * rad, 
+            y:this.y+ Math.cos(-this.angle-alpha)*rad
         })
 
-        // sin(pi + 45), cos(45)
+        // sin(pi + 45), cos(45), (top left)
         points.push({
-            x:this.x + Math.sin(Math.PI +this.angle+alpha) * rad, 
-            y:this.y+ Math.cos(this.angle+alpha)*rad
+            x:this.x + Math.sin(Math.PI - this.angle+alpha) * rad, 
+            y:this.y + Math.cos(Math.PI - this.angle+alpha)*rad
         })
 
-        // sin(pi + 45), -cos(45)
+        // sin(pi + 45), -cos(45) (bottom right)
         points.push({
-            x:this.x + Math.sin(Math.PI +this.angle+alpha) * rad, 
-            y:this.y - Math.cos(this.angle+alpha)*rad
+            x:this.x + Math.sin(Math.PI + this.angle-alpha) * rad, 
+            y:this.y - Math.cos(Math.PI + this.angle-alpha)*rad
         })
         return points;
     }   
@@ -110,39 +125,22 @@ class Spaceship {
 
     }
     draw(context) {
-        
-        context.save(); // save the previous state of the context (this is somehow ensuring the sensor raycasts  remain with the same (x,y) coordinates as the rectangle i'm drawing)
+        // context.save(); // save the previous state of the context (this is somehow ensuring the sensor raycasts  remain with the same (x,y) coordinates as the rectangle i'm drawing)
+        if (this.isDamaged) {
+            context.fillStyle = "gray"
+        }  else {
+            context.fillStyle = "black"
+        }
+
         context.beginPath();
-        context.stroke()
-        //==================================
-        // context.beginPath();
 
-        // context.arc(this.x, this.y, 15, 0, 2*Math.PI)
-        // context.moveTo(this.polygon[0].x,this.polygon[0].y);
-        // for(let i=1;i<this.polygon.length;i++){
-        //     // context.lineTo(this.polygon[i].x,this.polygon[i].y);
-        //     context.arc(this.polygon[i].x, this.polygon[i].y, 5, 0, 2*Math.PI)
-        // }
+        context.moveTo(this.polygon[0].x, this.polygon[0].y)       // this angle increase
+        context.lineTo(this.polygon[2].x, this.polygon[2].y)
+        context.lineTo(this.polygon[1].x, this.polygon[1].y)     // this anlge decreases
+        context.lineTo(this.polygon[3].x, this.polygon[3].y)
 
-        // context.arc(this.x, this.y, 15, 0, 2*Math.PI)
-        // console.log(this.x + " " + this.y)
-        // context.fill();
-        // context.fill();
-  
-        // console.log(this.polygon)   
-        context.moveTo(this.x, this.y)   
-        context.arc(this.x, this.y, 15, 0, 2*Math.PI)   
-        context.arc(this.polygon[0].x, this.polygon[0].y, 15, 0, 2*Math.PI) 
-        context.arc(this.polygon[1].x, this.polygon[1].y, 15, 0, 2*Math.PI) 
-        context.arc(this.polygon[2].x, this.polygon[2].y, 15, 0, 2*Math.PI)
-        context.arc(this.polygon[3].x, this.polygon[3].y, 15, 0, 2*Math.PI)
-
-        context.stroke();
-        context.restore(); // prevent infinite translation??
-        // context.moveTo(this.x, this.y); // move pen to x,y and set as start
-        // context.lineTo(100, 75) // draw line to this x,y point
-        // context.lineTo(100, 25) // draw a line to this x,y point
-        // context.fill()
+        context.fill();
+        // context.restore(); // prevent infinite translation??
 
         // spaceship is responsable for drawing its own sensors
         this.sensor.draw(context);
