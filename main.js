@@ -33,6 +33,7 @@ function animate () {
 
     map.draw(context);
     spaceship.draw(context);
+    
     context.restore();
     // this calls the animate() method over and over
     requestAnimationFrame(animate);

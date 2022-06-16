@@ -34,22 +34,29 @@ class Spaceship {
         const points=[];
         const rad=Math.hypot(this.height,this.length)/2;
         const alpha=Math.atan2(this.height,this.length);
+        // sin(45), -cos(45)
         points.push({
             x:this.x+Math.sin(this.angle+alpha)*rad,
             y:this.y-Math.cos(this.angle+alpha)*rad
         });
-        // points.push({
-        //     x:this.x+Math.sin(Math.PI+this.angle+alpha)*rad,
-        //     y:this.y+Math.cos(Math.PI+this.angle+alpha)*rad
-        // });
-        // points.push({
-        //     x:this.x+Math.sin(Math.PI+this.angle-alpha)*rad,
-        //     y:this.y+Math.cos(Math.PI+this.angle-alpha)*rad
-        // });
-        // points.push({
-        //     x:this.x+Math.sin(Math.PI+this.angle+alpha)*rad,
-        //     y:this.y+Math.cos(Math.PI+this.angle+alpha)*rad
-        // });
+
+        // sin(45), cos(45)
+        points.push({
+            x:this.x + Math.sin(this.angle+alpha) * rad, 
+            y:this.y+ Math.cos(this.angle+alpha)*rad
+        })
+
+        // sin(pi + 45), cos(45)
+        points.push({
+            x:this.x + Math.sin(Math.PI +this.angle+alpha) * rad, 
+            y:this.y+ Math.cos(this.angle+alpha)*rad
+        })
+
+        // sin(pi + 45), -cos(45)
+        points.push({
+            x:this.x + Math.sin(Math.PI +this.angle+alpha) * rad, 
+            y:this.y - Math.cos(this.angle+alpha)*rad
+        })
         return points;
     }   
 
@@ -105,31 +112,7 @@ class Spaceship {
     draw(context) {
         
         context.save(); // save the previous state of the context (this is somehow ensuring the sensor raycasts  remain with the same (x,y) coordinates as the rectangle i'm drawing)
-        // context.translate(this.x, this.y); // moves the canvas by some x and y (this creates a shift)
-        // context.rotate(this.angle);
-
-
         context.beginPath();
-        // note that the (0,0) point is in the top left of the canvas
-        // ====================================
-        // context.rect(
-        //     // set the start position
-        //     this.x,
-        //     this.y,
-        //     this.height,
-        //     this.length
-        // );
-
-        // context.moveTo(this.x, this.y)
-        // context.arc(this.x, this.y, 5, 0, 2*Math.PI)
-        // // context.moveTo(this.polygon[0].x, this.polygon[0].y)
-        // context.arc(this.polygon[0].x, this.polygon[0].y, 6, 0, 2*Math.PI)
-        // console.log(this.polygon[0].x + " " + this.polygon[0].y)
-        // // context.arc(this.polygon[1].x, this.polygon[1].y, 6, 0, 2*Math.PI)
-        // // context.arc(this.polygon[2].x, this.polygon[2].y, 10, 0, 2*Math.PI)
-        // // context.arc(this.polygon[3].x, this.polygon[3].y, 10, 0, 2*Math.PI)
-        // context.moveTo(75, 159.375) 
-        // context.arc(75, 159, 5, 0, 2*Math.PI)
         context.stroke()
         //==================================
         // context.beginPath();
@@ -149,8 +132,11 @@ class Spaceship {
         // console.log(this.polygon)   
         context.moveTo(this.x, this.y)   
         context.arc(this.x, this.y, 15, 0, 2*Math.PI)   
-        context.arc(this.polygon[0].x, this.polygon[0].y, 15, 0, 2*Math.PI)
-        
+        context.arc(this.polygon[0].x, this.polygon[0].y, 15, 0, 2*Math.PI) 
+        context.arc(this.polygon[1].x, this.polygon[1].y, 15, 0, 2*Math.PI) 
+        context.arc(this.polygon[2].x, this.polygon[2].y, 15, 0, 2*Math.PI)
+        context.arc(this.polygon[3].x, this.polygon[3].y, 15, 0, 2*Math.PI)
+
         context.stroke();
         context.restore(); // prevent infinite translation??
         // context.moveTo(this.x, this.y); // move pen to x,y and set as start
