@@ -1,11 +1,18 @@
 class Controls {
-    constructor () {
+    constructor (type) {
         this.up=false;
         this.down=false;
         this.right=false;
         this.left=false;
 
-        this.#addKeyboardListeners();
+        switch(type) {
+            case "KEYS":
+                this.#addKeyboardListeners();
+                break;
+            case "DUMMY":
+                this.right=true;
+                break;
+        }
     }
 
     // method for listening for keyboard events

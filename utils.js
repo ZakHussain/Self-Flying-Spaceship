@@ -3,12 +3,6 @@
 // when t is .5, you get A+((B-A)/2)
 // i.e., give a value between A and B dependent on t
 function lerp(A, B, t) {
-    // console.log("hello")
-    // console.log(A+(B-A)*t)
-    // console.log(A)
-    // console.log(B)
-    // console.log(t)
-    // console.log(A+(B-1)*t)
     return A+(B-A)*t;
 }
 

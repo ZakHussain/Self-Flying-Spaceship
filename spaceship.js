@@ -1,8 +1,7 @@
 class Spaceship {
-    constructor(x, y, length, height) {
+    constructor(x, y, length, height, controlType, maxSpeed=3) {
         this.x = x;
         this.y = y;
-        console.log("starting:" + " " + this.x + " " + this.y)
         this.length = length; // objects y
         this.height = height; // objects x (its horribly contradictory I used bad var names)
         
@@ -10,26 +9,32 @@ class Spaceship {
         this.acceleration = .2;
 
         // stop the Spaceship from going to fast and implement friction
-        this.maxSpeed = 5
+        this.maxSpeed = maxSpeed
         this.friction = 0.05;
 
         this.angle = 0;
 
         this.isDamaged = false;
-        // pass the ship to the sensor
-        this.sensor = new Sensor(this);
-        this.controls = new Controls();
+        if (controlType != "DUMMY") {
+            //pass the ship to the sensor componenet
+            this.sensor = new Sensor(this);
+        }
+        this.controls = new Controls(controlType);
     }
 
     // with the controls made, now we have to update the Spaceship
     //based on the controls
-    update = (mapBorders) => {
+    update = (mapBorders, obstacles) => {
         if (!this.isDamaged) {
             this.#move(); 
             this.polygon = this.#createPolygon()
             this.isDamaged = this.#assessDamage(mapBorders)
         }
-        this.sensor.update(mapBorders);
+
+        // obstacles of the spaceship class will not have sensors
+        if (this.sensor) {
+            this.sensor.update(mapBorders, obstacles)
+        }
     }
 
     #assessDamage(mapBorders) {
@@ -124,12 +129,12 @@ class Spaceship {
         this.y += Math.sin(this.angle) * this.speed;
 
     }
-    draw(context) {
+    draw(context, color) {
         // context.save(); // save the previous state of the context (this is somehow ensuring the sensor raycasts  remain with the same (x,y) coordinates as the rectangle i'm drawing)
         if (this.isDamaged) {
             context.fillStyle = "gray"
         }  else {
-            context.fillStyle = "black"
+            context.fillStyle = color
         }
 
         context.beginPath();
@@ -143,7 +148,9 @@ class Spaceship {
         // context.restore(); // prevent infinite translation??
 
         // spaceship is responsable for drawing its own sensors
-        this.sensor.draw(context);
+        if (this.sensor) {
+            this.sensor.draw(context);
+        }
         
     }
 }
