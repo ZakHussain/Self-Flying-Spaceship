@@ -33,7 +33,7 @@ function polysIntersect(p1, p2) {
         for (let j = 0; j < p2.length; j++) {
             const touch = getIntersection(
                p1[i],
-               p1[(i+1)%p1.length], 
+               p1[(i+1)%p1.length], // the mod is super useful for connecting to points 
                p2[j],
                p2[(j+1)%p2.length]
             )
@@ -43,4 +43,12 @@ function polysIntersect(p1, p2) {
         }
     }
     return false
+}
+
+function getRGBA(value){
+    const alpha=Math.abs(value);
+    const R=value<0?0:255;
+    const G=R;
+    const B=value>0?0:255;
+    return "rgba("+R+","+G+","+B+","+alpha+")";
 }

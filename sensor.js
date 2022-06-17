@@ -1,9 +1,9 @@
 class Sensor {
     constructor(spaceship) {
         this.spaceship = spaceship;
-        this.rayCount = 4;
+        this.rayCount = 16;
         this.rayLength = 100; // 100 unit pixels
-        this.raySpread = Math.PI/2;
+        this.raySpread = Math.PI*2;
 
         this.rays = []; // stores each created ray
         this.measurements = [];

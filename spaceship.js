@@ -20,7 +20,6 @@ class Spaceship {
         if (controlType != "DUMMY") {
             //pass the ship to the sensor componenet
             this.sensor = new Sensor(this);
-            console.log(this.sensor.rayCount)
             // define the neural network
             // this.inputLayerSize = this.sensor.rayCount
             // this.hiddenLayerSize = 6
@@ -38,7 +37,7 @@ class Spaceship {
         if (!this.isDamaged) {
             this.#move(); 
             this.polygon = this.#createPolygon()
-            this.isDamaged = this.#assessDamage(mapBorders)
+            this.isDamaged = this.#assessDamage(mapBorders, obstacles)
         }
 
         // obstacles of the spaceship class will not have sensors
@@ -58,14 +57,18 @@ class Spaceship {
         
     }
 
-    #assessDamage(mapBorders) {
+    #assessDamage(mapBorders, obstacles) {
         for (let i = 0; i < mapBorders.length; i++) {
             if (polysIntersect(this.polygon, mapBorders[i])){
-                console.log("true")
                 return true
             }
         }
-        // console.log("false")
+
+        for (let i = 0; i < obstacles.length; i++){
+            if (polysIntersect(this.polygon, obstacles[i].polygon))  {
+                return true
+            }
+        }
         return false;
     }
 
