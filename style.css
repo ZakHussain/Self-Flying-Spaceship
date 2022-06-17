@@ -5,6 +5,10 @@ body {
     text-align:center;
 }
 
-#myCanvas{
+#aiCanvas{
     background: rgb(136, 182, 199);
+}
+
+#networkCanvas {
+    background:  black;
 }

@@ -9,17 +9,17 @@ class Sensor {
         this.measurements = [];
     }
 
-    update(mapBorders) {
+    update(mapBorders, obstacles) {
         this.#castRays();
         this.measurements=[];
         for (let i=0; i<this.rays.length; i++) {
             this.measurements.push(
-                this.#getMeasurements(this.rays[i], mapBorders)
+                this.#getMeasurements(this.rays[i], mapBorders, obstacles)
             );
         }
     }
 
-    #getMeasurements(ray, mapBorders) {
+    #getMeasurements(ray, mapBorders, obstacles) {
         let touches = [];
         for (let i=0; i <mapBorders.length; i++) {
             // a touch is a {x:int, y:int, offset:float} object 
@@ -35,6 +35,21 @@ class Sensor {
                 touches.push(touch)
             }
         }
+
+        // test for obstacles
+        for (let i=0; i < obstacles.length; i++) {
+            const poly = obstacles[i].polygon
+            for (let j = 0; j < poly.length; j++) {
+                const value = getIntersection(
+                    ray[0], ray[1],
+                    poly[j], poly[(j+1)%poly.length]
+                )
+                if (value) {
+                    touches.push(value)
+                }
+            }
+        }
+
         // if nothing was intersection
         if (touches.length == 0) {
             return null;

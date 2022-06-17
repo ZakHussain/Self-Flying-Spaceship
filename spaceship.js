@@ -1,5 +1,5 @@
 class Spaceship {
-    constructor(x, y, length, height, controlType, maxSpeed=3) {
+    constructor(x, y, length, height, controlType="AI", maxSpeed=3) {
         this.x = x;
         this.y = y;
         this.length = length; // objects y
@@ -13,11 +13,21 @@ class Spaceship {
         this.friction = 0.05;
 
         this.angle = 0;
-
         this.isDamaged = false;
+
+        this.isAI = controlType=="AI"
+
         if (controlType != "DUMMY") {
             //pass the ship to the sensor componenet
             this.sensor = new Sensor(this);
+            console.log(this.sensor.rayCount)
+            // define the neural network
+            // this.inputLayerSize = this.sensor.rayCount
+            // this.hiddenLayerSize = 6
+            // this.outputLayer = 4 // the number of directions the AI can move
+            this.NN = new NeuralNetwork(
+                [this.sensor.rayCount, 6, 4]
+            )
         }
         this.controls = new Controls(controlType);
     }
@@ -34,7 +44,18 @@ class Spaceship {
         // obstacles of the spaceship class will not have sensors
         if (this.sensor) {
             this.sensor.update(mapBorders, obstacles)
+            const offsets=this.sensor.measurements.map( s => s==null?0:1-s.offset)
+            const outputs = NeuralNetwork.feedForward(offsets, this.NN)
+            if (this.isAI) {
+                this.controls.up=outputs[0]
+                this.controls.up = outputs[0]
+                this.controls.down=outputs[1]
+                this.controls.right=outputs[2]
+                this.controls.left=outputs[3]
+            }
+
         }
+        
     }
 
     #assessDamage(mapBorders) {
